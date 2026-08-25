@@ -1,4 +1,5 @@
-import { roomResponseSchema } from '../src/schemas/technocore'
+import { parse as parseLosslessJson, stringify as stringifyLosslessJson } from 'lossless-json'
+import { upstreamRoomResponseSchema } from '../src/schemas/technocore'
 import type { ApiErrorCode, ApiErrorPayload } from '../src/schemas/technocore'
 import { ROOM_PATTERN, isPrivateRoom } from '../src/lib/room'
 
@@ -25,6 +26,24 @@ const responseHeaders = {
 function jsonResponse(body: unknown, status = 200, extraHeaders?: HeadersInit): Response {
   return new Response(JSON.stringify(body), {
     status,
+    headers: { ...responseHeaders, ...Object.fromEntries(new Headers(extraHeaders)) },
+  })
+}
+
+function parseUpstreamNumber(value: string): number | bigint {
+  const number = Number(value)
+  if (/^-?(0|[1-9]\d*)$/.test(value) && !Number.isSafeInteger(number)) {
+    return BigInt(value)
+  }
+  return number
+}
+
+function upstreamJsonResponse(body: unknown, extraHeaders?: HeadersInit): Response {
+  const serialized = stringifyLosslessJson(body)
+  if (serialized === undefined) return errorResponse(502, 'UPSTREAM_SCHEMA_ERROR')
+
+  return new Response(serialized, {
+    status: 200,
     headers: { ...responseHeaders, ...Object.fromEntries(new Headers(extraHeaders)) },
   })
 }
@@ -191,17 +210,19 @@ export async function handleRequest(
 
     let payload: unknown
     try {
-      payload = JSON.parse(new TextDecoder().decode(body))
+      payload = parseLosslessJson(new TextDecoder().decode(body), null, {
+        parseNumber: parseUpstreamNumber,
+      })
     } catch {
       return errorResponse(502, 'UPSTREAM_SCHEMA_ERROR')
     }
 
-    const parsed = roomResponseSchema.safeParse(payload)
+    const parsed = upstreamRoomResponseSchema.safeParse(payload)
     if (!parsed.success || parsed.data.room !== room) {
       return errorResponse(502, 'UPSTREAM_SCHEMA_ERROR')
     }
 
-    const response = jsonResponse(parsed.data, 200, {
+    const response = upstreamJsonResponse(parsed.data, {
       'Cache-Control': `public, max-age=0, s-maxage=${CACHE_SECONDS}`,
     })
     try {

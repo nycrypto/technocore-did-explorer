@@ -36,6 +36,23 @@ describe('Technocore Worker proxy', () => {
     expect(fetcher).toHaveBeenCalledTimes(1)
   })
 
+  it('preserves an unsafe integer nonce without rounding it', async () => {
+    const nonce = '1787667512266258700'
+    const fetcher = vi.fn(
+      async () =>
+        new Response(
+          `{"room":"lobby","count":1,"first_seq":104,"last_seq":104,"messages":[{"seq":104,"ts":"2026-08-25T10:03:00Z","from":"${ROOM_FIXTURE.messages[1].from}","text":"large nonce","nonce":${nonce}}]}`,
+          { headers: { 'Content-Type': 'application/json' } },
+        ),
+    ) as typeof fetch
+
+    const response = await handleRequest(request('/api/rooms/lobby?limit=50'), { fetcher })
+    const body = await response.text()
+
+    expect(response.status).toBe(200)
+    expect(body).toContain(`"nonce":${nonce}`)
+  })
+
   it.each([
     ['/api/rooms/BadRoom', 400, 'INVALID_ROOM'],
     ['/api/rooms/p-secret', 403, 'PRIVATE_ROOM_BLOCKED'],

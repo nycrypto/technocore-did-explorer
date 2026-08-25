@@ -13,6 +13,22 @@ describe('fetchRoomActivity', () => {
     expect(fetcher).toHaveBeenCalledWith('/api/rooms/lobby?limit=50', { signal: undefined })
   })
 
+  it('keeps an unsafe integer nonce as an exact decimal string', async () => {
+    const nonce = '1787667512266258700'
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(
+        async () =>
+          new Response(
+            `{"room":"lobby","count":1,"first_seq":104,"last_seq":104,"messages":[{"seq":104,"ts":"2026-08-25T10:03:00Z","from":"${ROOM_FIXTURE.messages[1].from}","text":"large nonce","nonce":${nonce}}]}`,
+          ),
+      ),
+    )
+
+    const response = await fetchRoomActivity('lobby', 50)
+    expect(response.messages[0].nonce).toBe(nonce)
+  })
+
   it('surfaces a structured proxy error', async () => {
     vi.stubGlobal(
       'fetch',

@@ -1,3 +1,4 @@
+import { parse as parseLosslessJson } from 'lossless-json'
 import { apiErrorSchema, roomResponseSchema } from '../schemas/technocore'
 import type { ApiErrorCode, RoomResponse } from '../schemas/technocore'
 
@@ -13,6 +14,12 @@ export class ExplorerApiError extends Error {
   }
 }
 
+function parseClientNumber(value: string): number | string {
+  const number = Number(value)
+  if (/^-?(0|[1-9]\d*)$/.test(value) && !Number.isSafeInteger(number)) return value
+  return number
+}
+
 export async function fetchRoomActivity(
   room: string,
   limit: number,
@@ -26,7 +33,14 @@ export async function fetchRoomActivity(
     throw new ExplorerApiError('NETWORK_ERROR', 0)
   }
 
-  const payload: unknown = await response.json().catch(() => null)
+  const payload: unknown = await response
+    .text()
+    .then((text) =>
+      parseLosslessJson(text, null, {
+        parseNumber: parseClientNumber,
+      }),
+    )
+    .catch(() => null)
   if (!response.ok) {
     const parsedError = apiErrorSchema.safeParse(payload)
     if (parsedError.success) {

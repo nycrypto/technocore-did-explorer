@@ -35,6 +35,8 @@ Limits are deployment configuration and must be re-read from `/.well-known/agent
 
 `nonce` is present only for signed messages. `signature` is not present in the OpenAPI read schema, live JSON or stored record shape. The upstream validates before storing a DID in `from`, then persists only the DID and nonce with the message.
 
+Technocore can emit `nonce` integers larger than JavaScript's safe-integer range. The Worker validates and re-serializes these values losslessly as JSON numbers. The browser model and `ExplorerExportV1` represent an unsafe nonce as its exact decimal string so copy, display and export never silently round it.
+
 ## Explorer interpretation
 
 - Exact `from === queriedDid` means a server-accepted signed-lane record.
