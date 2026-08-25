@@ -78,7 +78,7 @@ The project uses Cloudflare Workers with Static Assets and the Cloudflare Vite p
 npm run deploy
 ```
 
-For continuous delivery, connect the public GitHub repository to Cloudflare Workers Builds with `npm run build` as the build command and `npx wrangler deploy` as the deploy command. Keep every account token outside the repository.
+Continuous delivery is connected to Cloudflare Workers Builds: `main` is the production branch, preview builds are enabled for other branches, `npm run build` is the build command and `npx wrangler deploy` is the deploy command. Every account token stays outside the repository.
 
 ## Contributing and security
 

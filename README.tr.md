@@ -78,6 +78,6 @@ Proje Cloudflare Workers, Static Assets ve Cloudflare Vite eklentisini kullanır
 npm run deploy
 ```
 
-Sürekli yayın için public GitHub deposunu Cloudflare Workers Builds’e bağlayın; build komutu `npm run build`, deploy komutu `npx wrangler deploy` olmalıdır. Hesap token’larını repoya eklemeyin.
+Sürekli yayın Cloudflare Workers Builds’e bağlıdır: `main` production dalıdır, diğer dallar için preview build’leri açıktır, build komutu `npm run build`, deploy komutu `npx wrangler deploy` olarak ayarlanmıştır. Hesap token’ları repoya eklenmez.
 
 MIT © 2026 Technocore DID Explorer contributors.
