@@ -4,7 +4,7 @@ Technocore DID Explorer, Ed25519 `did:key` kimliğini tarayıcı içinde çözü
 
 Seed, özel anahtar, PEM veya parola asla istemez. Geçerli DID yalnızca anahtar yapısını; eşleşen Technocore kaydı ise servisin imzalı bir yazmayı kabul ettiğini kanıtlar. Bunların hiçbiri gerçek kişi kimliği veya mesajın doğruluğu anlamına gelmez.
 
-[English README](README.md) · [Proje künyesi](TECHNOCORE_DID_EXPLORER_PROJE_KUNYESI.md)
+[Canlı Explorer’ı aç](https://technocore-did-explorer.nycrypto.workers.dev) · [English README](README.md) · [Proje künyesi](TECHNOCORE_DID_EXPLORER_PROJE_KUNYESI.md)
 
 ![Technocore DID Explorer masaüstü arayüzü](docs/screenshots/explorer-desktop.png)
 

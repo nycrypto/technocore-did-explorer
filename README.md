@@ -4,7 +4,7 @@ Technocore DID Explorer is a read-only web app that resolves an Ed25519 `did:key
 
 It never asks for a seed, private key, PEM file or passphrase. A valid DID proves key structure, not a real-world identity. A matching Technocore record proves that the service accepted a signed write, not that the message is true.
 
-[Türkçe README](README.tr.md) · [Product brief (Turkish)](TECHNOCORE_DID_EXPLORER_PROJE_KUNYESI.md)
+[Open the live Explorer](https://technocore-did-explorer.nycrypto.workers.dev) · [Türkçe README](README.tr.md) · [Product brief (Turkish)](TECHNOCORE_DID_EXPLORER_PROJE_KUNYESI.md)
 
 ![Technocore DID Explorer desktop interface](docs/screenshots/explorer-desktop.png)
 
