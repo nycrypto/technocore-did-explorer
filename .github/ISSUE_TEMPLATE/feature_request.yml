@@ -1,0 +1,29 @@
+name: Feature request
+description: Propose a narrowly scoped read-only improvement.
+title: 'feat: '
+labels: [enhancement]
+body:
+  - type: textarea
+    id: goal
+    attributes:
+      label: Goal
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+    validations:
+      required: true
+  - type: textarea
+    id: out-of-scope
+    attributes:
+      label: Out of scope
+    validations:
+      required: true
+  - type: textarea
+    id: test
+    attributes:
+      label: Test method
+    validations:
+      required: true

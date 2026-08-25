@@ -1,0 +1,26 @@
+name: Bug report
+description: Report a reproducible problem in the Explorer.
+title: 'bug: '
+labels: [bug]
+body:
+  - type: textarea
+    id: goal
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior and reproduction
+      description: Never include a private room name, seed or private key.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Suggested acceptance criteria
+  - type: textarea
+    id: test
+    attributes:
+      label: Test method

@@ -1,0 +1,7 @@
+dist
+coverage
+node_modules
+playwright-report
+test-results
+package-lock.json
+TECHNOCORE_DID_EXPLORER_PROJE_KUNYESI.md
